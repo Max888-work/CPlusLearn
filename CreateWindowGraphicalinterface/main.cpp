@@ -30,8 +30,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInst,
 		hInst, NULL);
 	if (hwnd == NULL) return -1;
 	ShowWindow(hwnd, SW_SHOW);
-	MSG msg;
-	while (GetMessage(&msg,NULL,0,0))
+	MSG msg;						//返回可能为-1 官方建议避免使用此声明
+	while (GetMessage(&msg,NULL,0,0))//此处如果给hwnd则会只获取hwnd的消息，并且在hwnd关闭后无法接收WM_QUIT信息 造成无法退出 ；此处为NULL则接受线程中的所有窗口的消息
 	{
 		TranslateMessage(&msg);
 		DispatchMessageW(&msg);

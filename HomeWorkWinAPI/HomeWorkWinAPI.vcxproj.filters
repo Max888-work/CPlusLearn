@@ -18,7 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main_explain.cpp">
+    <ClCompile Include="D:\BaiduNetdiskDownload\MFC进阶资料\MFC进阶资料\day1\1-教学资料\第一天作业\第一天作业.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
