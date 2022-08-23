@@ -29,6 +29,7 @@ BEGIN_MESSAGE_MAP(CMFCApplicationView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_WM_LBUTTONDOWN()
 //	ON_WM_PAINT()
+ON_WM_CHAR()
 END_MESSAGE_MAP()
 
 // CMFCApplicationView 构造/析构
@@ -53,7 +54,7 @@ BOOL CMFCApplicationView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CMFCApplicationView 绘图
 
-void CMFCApplicationView::OnDraw(CDC* pDC) //WM_PAINT的消息处理函数OnPaint（） 内部调用onDraw（） 两者同时存在只有OnPaint（）有效
+void CMFCApplicationView::OnDraw(CDC* pDC) //WM_PAINT的消息处理函数OnPaint（） 内部调用onDraw（） 两者同时存在OnPaint（）有效
 {
 	CMFCApplicationDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -122,3 +123,14 @@ void CMFCApplicationView::OnLButtonDown(UINT nFlags, CPoint point)
 //					   // 不为绘图消息调用 CView::OnPaint()    
 //	//dc.TextOutW(200, 200, _T("OnPaint"));						//_T自动适应字符集 ANSI 多字节，单字节 一个字符一个字节  Unicode宽字节 一个字符两个字节
 //}
+
+//经过翻译后的键盘值消息处理
+void CMFCApplicationView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	TCHAR c = (TCHAR)nChar;
+	CString str;
+	str.Format(TEXT("%c"), c);
+	::MessageBox(NULL, str, TEXT("键盘值"), MB_OK);
+	CView::OnChar(nChar, nRepCnt, nFlags);
+}

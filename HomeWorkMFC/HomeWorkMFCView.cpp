@@ -55,15 +55,18 @@ BOOL CHomeWorkMFCView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CHomeWorkMFCView 绘图
 
-void CHomeWorkMFCView::OnDraw(CDC* /*pDC*/)
-{
-	CHomeWorkMFCDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
-
-	// TODO: 在此处为本机数据添加绘制代码
-}
+//void CHomeWorkMFCView::OnDraw(CDC* pDC)
+//{
+//	CHomeWorkMFCDoc* pDoc = GetDocument();
+//	ASSERT_VALID(pDoc);
+//	if (!pDoc)
+//		return;
+//	CPen* pen = new CPen(PS_DASH, 1, RGB(255, 0, 0));
+//	pDC->SelectObject(pen);
+//	pDC->MoveTo(10, 10);
+//	pDC->LineTo(120, 10);
+//	// TODO: 在此处为本机数据添加绘制代码
+//}
 
 
 // CHomeWorkMFCView 打印
@@ -164,4 +167,18 @@ void CHomeWorkMFCView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 	}
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+
+void CHomeWorkMFCView::OnDraw(CDC* pDC)
+{
+	// TODO: 在此添加专用代码和/或调用基类
+		CHomeWorkMFCDoc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	CPen* pen = new CPen(PS_DASH, 1, RGB(255, 0, 0));
+	pDC->SelectObject(pen);
+	pDC->MoveTo(10, 10);
+	pDC->LineTo(120, 10);
 }
