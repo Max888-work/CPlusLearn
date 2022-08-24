@@ -50,6 +50,10 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	virtual void OnDraw(CDC* /*pDC*/);
 	afx_msg void OnPaint();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+private:
+	CString str;
 };
 
 #ifndef _DEBUG  // MFCAppPaintLineView.cpp 中的调试版本

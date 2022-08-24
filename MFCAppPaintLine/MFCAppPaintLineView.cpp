@@ -28,6 +28,8 @@ BEGIN_MESSAGE_MAP(CMFCAppPaintLineView, CListView)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_PAINT()
+	ON_WM_CREATE()
+	ON_WM_CHAR()
 END_MESSAGE_MAP()
 
 // CMFCAppPaintLineView 构造/析构
@@ -108,6 +110,9 @@ void CMFCAppPaintLineView::OnLButtonDown(UINT nFlags, CPoint point)
 
 
 // TODO: 在此添加消息处理程序代码和/或调用默认值
+	SetCaretPos(point); //插入符移动
+	str.Empty();
+
 	m_Point = point;
 	//CClientDC cdc(this);
 	//const COLORREF rgbRed = 0x00FF0000;
@@ -142,8 +147,8 @@ void CMFCAppPaintLineView::OnLButtonUp(UINT nFlags, CPoint point)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	CClientDC dc(this);
 
-	dc.MoveTo(m_Point);
-	dc.LineTo(point);
+	//dc.MoveTo(m_Point);
+	//dc.LineTo(point);
 
 	CListView::OnLButtonUp(nFlags, point);
 }
@@ -207,4 +212,58 @@ void CMFCAppPaintLineView::OnPaint()
 					   // TODO: 在此处添加消息处理程序代码
 					   // 不为绘图消息调用 CListView::OnPaint()
 	OnDraw(&dc);
+}
+
+
+int CMFCAppPaintLineView::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CListView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	// TODO:  在此添加您专用的创建代码
+	CClientDC Cdc(this);
+	TEXTMETRIC text;
+	Cdc.GetTextMetrics(&text);
+
+	CreateSolidCaret(text.tmAveCharWidth/8,text.tmHeight);
+	ShowCaret();
+	return 0;
+}
+
+
+void CMFCAppPaintLineView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	//CString str1;
+	//str1.Format(_T("%c"), nChar);
+	CPoint caret;
+	CClientDC dc(this);
+	CSize size = dc.GetTextExtent(str);
+	caret.y = m_Point.y;
+	if (nChar == VK_RETURN) //换行
+	{
+		str.Empty();
+		caret.y = m_Point.y + size.cy;
+		m_Point.y = caret.y;
+	}
+	else if (nChar == VK_BACK) {
+		COLORREF color = dc.GetBkColor();
+		COLORREF oldcolor = dc.SetTextColor(color);
+		dc.TextOutW(m_Point.x, m_Point.y, str);
+		str = str.Left(str.GetLength() - 1);
+		dc.SetTextColor(oldcolor);
+		dc.TextOutW(m_Point.x, m_Point.y, str);
+
+	}
+	else
+	{
+		str += (TCHAR)nChar;
+	}
+	size = dc.GetTextExtent(str);
+	caret.x = m_Point.x + size.cx;
+	HideCaret();  
+	dc.TextOutW(m_Point.x, m_Point.y, str);
+	ShowCaret();
+	SetCaretPos(caret);
+	//CListView::OnChar(nChar, nRepCnt, nFlags);
 }
